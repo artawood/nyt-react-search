@@ -9,8 +9,8 @@ The documented process below is for my own purpose of keeping track of progress 
 ### Setup (10/05/2018)
 I setup the app structure with the following directories and files:
 - client directory
-    This directory was created automatically by running the command "npx create-react-app client"
-    *Note 1: added "proxy" in the package so react can be served seperately from api server in development environment* 
+    This directory was created automatically by running the command "npx create-react-app client"<br/>
+    *Note 1: added "proxy" in the package so react can be served seperately from api server in development environment* <br/>
     *Note 2: installed react-router-dom* 
 - routes directory
     This directory was manually created and will contain the various routes for making api calls
@@ -26,4 +26,10 @@ I setup the app structure with the following directories and files:
     This package also contains dependencies for the root
 - server.js
     "Require" dependencies from the package of the root and serving the app
+
+### Front End Development
+- Added Jumbotron component (10/05/2018)
+- Added Navbar component (10/05/2018)
+- Added Search card component (10/05/2018)
+- Added Route for Search card component (10/)
 
