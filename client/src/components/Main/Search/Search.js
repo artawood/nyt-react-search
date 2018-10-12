@@ -1,42 +1,90 @@
-import React from "react";
+import React, { Component } from "react";
+//Front End Components
 import "./Search.css";
+import Input from "./Input";
+import Count from "./Count";
+import StartYear from "./StartYear";
+import EndYear from "./EndYear";
+import SearchButton from "./SearchButton";
+import ClearButton from "./ClearButton";
 
-const Search = props => (
-    <div className="row">
+//API
+import API from "../../../utils/API"
+
+class Search extends Component {
+
+  state = {
+      articles: [],
+      search: ""
+  }
+  
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+    API.getArticles(this.state.search)
+      .then(res => this.setState({ articles: res.data })
+      )
+      .catch(err => console.log(err));
+      console.log(this.state.search);
+  };
+  
+  render() {
+    return (
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="card">
+            <div className="card-header">
+              <strong><i className="fa fa-list-alt"></i> Search Parameters</strong>
+            </div>
+            <div className="card-body">
+              <form>
+                <Input
+                    name="search"
+                    value={this.state.search}
+                    onChange={this.handleInputChange}
+                    placeholder="Enter keywords to search articles"
+                 />
+                <Count />
+                <StartYear />
+                <EndYear />
+                <SearchButton
+                    onClick={this.handleFormSubmit}
+                />
+                <ClearButton />
+              </form>
+            </div>
+          </div>
+        </div>
         <div className="col-sm-12">
             <div className="card">
-                <div className="card-header">
-                    <strong><i className="fa fa-list-alt"></i> Search Parameters</strong>
-                </div>
-                <div className="card-body">
-                    <form>
-                        <div className="form-group">
-                            <label htmlFor="search">Search Term:</label>
-                            <input type="text" className="form-control" id="search-term" {...props}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="pwd">Number of Records to Retrieve:</label>
-                            <select id="article-count" className="custom-select" aria-labelledby="dropdownMenuButton">
-                                <option defaultValue value="1">1</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="start-year">Start Year (Optional):</label>
-                            <input type="text" className="form-control" id="start-year"/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="end-year">End Year (Optional):</label>
-                            <input type="text" className="form-control" id="end-year"/>
-                        </div>
-                        <button type="submit" className="btn btn-primary" id="run-search" onClick={props.onClick}><i className="fa fa-search"></i> Search</button>
-                        <button className="btn btn-secondary" id="clear-all"><i className="fa fa-trash"></i> Clear Results</button>
-                    </form>
+                <div className="card-header"><strong>Search Results</strong></div>
+                <div className="card-body" id="search-results">
+                {!this.state.articles.length ? (
+                <h2 className="text-center"> No Articles to Display</h2> ) : (
+                    <div>
+                        {this.state.articles.map(article => {
+                            return (
+                                <h1>{article.response.docs.headline.main}</h1>
+                            )
+                        })}
+                    </div>
+                    )
+                }
                 </div>
             </div>
         </div>
-    </div>
-)
+      </div>
+    )
+  }
+}
+
+    
+
 
 export default Search;
